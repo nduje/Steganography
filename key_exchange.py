@@ -51,7 +51,15 @@ def generate_DH_parameters():
     g = DH_parameters.parameter_numbers().g
     p = DH_parameters.parameter_numbers().p
 
-    print(f"Diffie-Hellman parameters:\ng -> {g}\np -> {p}\n")
+    DH_parameters = DH_parameters.parameter_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.ParameterFormat.PKCS3
+    )
+
+    DH_parameters_decoded = DH_parameters.decode()
+
+    print(f"Diffie-Hellman parameters:\n{DH_parameters_decoded}\ng -> {g}\np -> {p}\n")
+
 
     return DH_parameters
 
@@ -73,35 +81,22 @@ def generate_DH_private_key(DH_parameters):
 def generate_DH_public_key(DH_private_key):
     DH_public_key = DH_private_key.public_key()
 
-    DH_public_key_bytes = DH_public_key.public_bytes(
+    DH_public_key = DH_public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
-    ).decode()
+    )
 
-    print(f"Diffie-Hellman public key:\n{DH_public_key_bytes}")
+    DH_public_key_decoded = DH_public_key.decode()
+
+    print(f"Diffie-Hellman public key:\n{DH_public_key_decoded}")
 
     return DH_public_key
-
-
-def get_DH_shared_key(DH_private_key, DH_public_key):
-    DH_shared_key = DH_private_key.exchange(DH_public_key)
-
-    DH_shared_key_base64 = base64.b64encode(DH_shared_key).decode()
-
-    print(f"Diffie-Hellman shared key:\n{DH_shared_key_base64}\n")
-
-    return DH_shared_key
 
 
 def sign_key_client_to_server(RSA_private_key, DH_public_key):
     RSA_private_key = serialization.load_pem_private_key(
         RSA_private_key,
         password=None
-    )
-
-    DH_public_key = DH_public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
     
     client_signature = RSA_private_key.sign(
@@ -113,35 +108,24 @@ def sign_key_client_to_server(RSA_private_key, DH_public_key):
         hashes.SHA256()
     )
 
-    client_signature_base64 = base64.b64encode(client_signature).decode()
+    client_signature_base64 = base64.b64encode(client_signature)
 
-    print(f"Client signature:\n{client_signature_base64}\n")
+    client_signature_decoded = client_signature_base64.decode()
 
-    return client_signature;
+    print(f"Client signature:\n{client_signature_decoded}\n")
+
+    return client_signature_base64;
 
 
-def sign_key_server_to_client(RSA_private_key, DH_parameters, DH_public_server, DH_public_client):
+def sign_key_server_to_client(RSA_private_key, DH_parameters, server_DH_public_key, client_DH_public_key):
     RSA_private_key = serialization.load_pem_private_key(
         RSA_private_key,
         password=None
     )
 
-    DH_parameters = DH_parameters.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
+    client_DH_public_key = client_DH_public_key.encode()
 
-    DH_public_key_server = DH_public_key_server.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
-
-    DH_public_key_private = DH_public_key_private.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
-
-    message = DH_parameters + DH_public_client + DH_public_client
+    message = DH_parameters + server_DH_public_key + client_DH_public_key
     
     server_signature = RSA_private_key.sign(
         message,
@@ -152,8 +136,28 @@ def sign_key_server_to_client(RSA_private_key, DH_parameters, DH_public_server, 
         hashes.SHA256()
     )
 
-    server_signature_base64 = base64.b64encode(server_signature).decode()
+    server_signature_base64 = base64.b64encode(server_signature)
 
-    print(f"Client signature:\n{server_signature_base64}\n")
+    server_signature_decoded = server_signature_base64.decode()
 
-    return server_signature;
+    print(f"Server signature:\n{server_signature_decoded}\n")
+
+    return server_signature_base64;
+
+
+def get_key(private_key, public_key):
+    public_key = public_key.encode()
+    public_key = serialization.load_pem_public_key(public_key)
+
+    DH_shared_key = private_key.exchange(public_key)
+
+    derived_key = HKDF(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=None,
+        info=b'handshake data',
+    ).derive(DH_shared_key)
+
+    derived_key = base64.b64encode(derived_key).decode()
+
+    return derived_key
