@@ -7,3 +7,4 @@ if __name__ == "__main__":
     DH_private_key = generate_DH_private_key(DH_parameters=DH_parameters)
     DH_public_key = generate_DH_public_key(DH_private_key=DH_private_key)
     DH_shared_key = get_DH_shared_key(DH_private_key=DH_private_key, DH_public_key=DH_public_key)
+    client_signature = sign_key_client_to_server(RSA_private_key=RSA_private_key, DH_public_key=DH_public_key)
