@@ -1,9 +1,9 @@
 import socket
 from key_exchange_client import *
+from secret_message_exchange_client import *
 
 IP = socket.gethostname()
 PORT = 1234
-
 
 
 def exchange_key(client_socket):
@@ -32,13 +32,24 @@ def exchange_key(client_socket):
     print(f"\nServer verified.\n")
 
     key = get_key(private_key=client_DH_private_key, public_key=server_DH_public_key)
-    print(f"Exchanged key:\n{key}")
+    print(f"Exchanged key:\n{key}\n")
+
+    return key
+
+
+def exchange_steganography_key(client_socket, key):
+    steganography_key = receive_steganography_key(client_socket=client_socket, key=key)
+    print(f"Recieved steganography key:\n{steganography_key}\n")
+
+    return steganography_key
 
 def main():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((IP, PORT))
 
-    exchange_key(client_socket=client_socket)
+    key = exchange_key(client_socket=client_socket)
+    
+    steganography_key = exchange_steganography_key(client_socket=client_socket, key=key)
 
     client_socket.close()
 
