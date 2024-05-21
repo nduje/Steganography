@@ -1,6 +1,6 @@
 import socket
-from modules.helpers.key_exchange_client import *
-from modules.helpers.secret_message_exchange_client import *
+from modules.exchange.helpers.key_exchange_client import *
+from modules.exchange.helpers.secret_message_exchange_client import *
 
 IP = socket.gethostname()
 PORT = 1234
