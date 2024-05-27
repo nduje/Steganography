@@ -11,7 +11,7 @@ def load_image():
     return copy
 
 
-def encode_message(message, image, counter, steganography_key):
+def encode_message(message, image, counter):
     width, height = image.size
 
     binary_counter = 0
@@ -31,11 +31,6 @@ def encode_message(message, image, counter, steganography_key):
 
             binary = message[binary_counter]
 
-            code = [0] * 8
-
-            for i in range(8):
-                code[i] = binary[i] ^ steganography_key[i]
-
             for i in range(3):
                 current_x = x + i
                 pixel_value = image.getpixel((current_x, y))
@@ -43,14 +38,14 @@ def encode_message(message, image, counter, steganography_key):
                 new_colors = list(colors)
 
                 for j in range(3):
-                    if index < len(code) and colors[j] < 255:
-                        if code[index] == 0 and colors[j] % 2 == 0:
+                    if index < len(binary) and colors[j] < 255:
+                        if binary[index] == 0 and colors[j] % 2 == 0:
                             new_colors[j] = colors[j]
-                        elif code[index] == 1 and colors[j] % 2 == 0:
+                        elif binary[index] == 1 and colors[j] % 2 == 0:
                             new_colors[j] = colors[j] + 1
-                        elif code[index] == 0 and colors[j] % 2 == 1:
+                        elif binary[index] == 0 and colors[j] % 2 == 1:
                             new_colors[j] = colors[j] + 1
-                        elif code[index] == 1 and colors[j] % 2 == 1:
+                        elif binary[index] == 1 and colors[j] % 2 == 1:
                             new_colors[j] = colors[j]
 
                     if index < 8:
@@ -121,4 +116,5 @@ def decode_message(image):
         if break_all:
             break
     
+    binary.pop()
     return binary_counter, binary

@@ -1,5 +1,5 @@
 from modules.steganography.steganography import *
-import io
+from modules.exchange.secret_message_exchange import *
 
 HEADER_LENGTH = 10
 
@@ -30,8 +30,8 @@ def format_image():
     return hidden_message
 
 
-def send_hidden_message(client_socket, message, steganography_key):
-    hide_message(message=message, steganography_key=steganography_key)
+def send_hidden_message(client_socket, message, key):
+    hide_message(message=message, key=key)
 
     hidden_message = format_image()
 

@@ -1,6 +1,5 @@
 import socket
 from modules.exchange.helpers.key_exchange_client import *
-from modules.exchange.helpers.secret_message_exchange_client import *
 from modules.exchange.helpers.message_exchange_client import *
 
 IP = socket.gethostname()
@@ -38,17 +37,8 @@ def exchange_key(client_socket):
     return key
 
 
-def exchange_steganography_key(client_socket, key):
-    steganography_key = receive_steganography_key(client_socket=client_socket, key=key)
-    print(f"Recieved steganography key:\n{steganography_key}\n")
-
-    return steganography_key
-
-
-def exchange_hidden_message(client_socket, steganography_key):
-    steganography_key = binary_string_to_int_list(binary_string=steganography_key)
-    
-    message = receive_hidden_message(client_socket=client_socket, steganography_key=steganography_key)
+def exchange_hidden_message(client_socket, key):
+    message = receive_hidden_message(client_socket=client_socket, key=key)
     print(f"Recieved secret message:\n{message}\n")
 
 
@@ -58,9 +48,7 @@ def main():
 
     key = exchange_key(client_socket=client_socket)
     
-    steganography_key = exchange_steganography_key(client_socket=client_socket, key=key)
-
-    exchange_hidden_message(client_socket=client_socket, steganography_key=steganography_key)
+    exchange_hidden_message(client_socket=client_socket, key=key)
 
     client_socket.close()
 

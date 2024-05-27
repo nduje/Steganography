@@ -1,11 +1,25 @@
 def message_to_ascii_binary_strings(message):
-    binary_strings = [bin(ord(char))[2:].zfill(8) for char in message]
-    return binary_strings
+    binary_string = ''.join([bin(ord(char))[2:].zfill(8) for char in message])
+    return binary_string
+
+
+def group_binary_strings(binary_string):
+    result = []
+    
+    for i in range(0, len(binary_string), 8):
+        result.append(binary_string[i:i+8])
+    
+    return result
 
 
 def binary_strings_to_matrix(binary_strings):
     int_lists = [binary_string_to_int_list(binary_string) for binary_string in binary_strings]
     return int_lists
+
+
+def binary_list_to_string(binary_list):
+    binary_string = ''.join(str(bit) for bit in binary_list)
+    return binary_string
 
 
 def binary_string_to_int_list(binary_string):
@@ -16,25 +30,13 @@ def get_binary_strings_length(binary_strings):
     return len(binary_strings)
 
 
-def prepare_message_for_hiding(message):
-    binary_strings = message_to_ascii_binary_strings(message=message)
-    binary = binary_strings_to_matrix(binary_strings=binary_strings)
-
-    return binary_strings, binary
-
-
-def group_binary_in_list(number_of_lists, binary_code, steganography_key):
+def group_binary_in_list(number_of_lists, binary_code):
     matrix = []
     
     for i in range(number_of_lists):
         start_index = i * 8
         end_index = min((i + 1) * 8, len(binary_code))
-        coded_character = binary_code[start_index:end_index]
-
-        character = [0] * 8
-
-        for j in range(8):
-            character[j] = coded_character[j] ^ steganography_key[j]
+        character = binary_code[start_index:end_index]
 
         matrix.append(character)
 
@@ -52,8 +54,17 @@ def ascii_binary_strings_to_message(matrix):
     return message
 
 
-def prepare_message_for_exposing(number_of_lists, binary_code, steganography_key):
-    character_matrix = group_binary_in_list(number_of_lists=number_of_lists, binary_code=binary_code, steganography_key=steganography_key)
+def prepare_message_for_hidding(binary_code):
+    binary = group_binary_strings(binary_string=binary_code)
+    counter = get_binary_strings_length(binary_strings=binary)
+    binary = binary_strings_to_matrix(binary_strings=binary)
+
+    return binary, counter
+
+
+def prepare_message_for_exposing(number_of_lists, binary_code):
+    binary_code = binary_string_to_int_list(binary_string=binary_code)
+    character_matrix = group_binary_in_list(number_of_lists=number_of_lists, binary_code=binary_code)
     message = ascii_binary_strings_to_message(matrix=character_matrix)
 
     return message

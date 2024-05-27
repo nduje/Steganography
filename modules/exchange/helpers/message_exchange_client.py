@@ -12,7 +12,7 @@ def format_image(hidden_message):
     return image
 
 
-def receive_hidden_message(client_socket, steganography_key):
+def receive_hidden_message(client_socket, key):
     message_header = client_socket.recv(HEADER_LENGTH)
 
     if not len(message_header):
@@ -23,6 +23,6 @@ def receive_hidden_message(client_socket, steganography_key):
 
     hidden_message = format_image(hidden_message=hidden_message)
 
-    exposed_message = expose_message(hidden_message=hidden_message, steganography_key=steganography_key)
+    exposed_message = expose_message(hidden_message=hidden_message, key=key)
 
     return exposed_message
