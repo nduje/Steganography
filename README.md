@@ -1,16 +1,18 @@
 # Steganography
 
+"Steganography" project involves the design and implementation of a custom steganographic algorithm as a practical assignment for the "Computer Forensics" course.
+
 ## Steps:
 
 - RSA key generation (server/client)
 - Diffie-Hellman key exchange (server/client)
-- Steganography key generation (server)
-- Steganography key AES-CBC encryption based on exchanged symmetric key (server)
-- Steganography key exchange (server/client)
-- Decrypt steganography using AES-CBC decryption algorithm (client)
 - Choose secret message (server)
-- Secret message AES-CBC encryption based on exchanged symmetric key (server)
-- Hide encrypted message within carrier using steganography algorithm based on steganography key (server)
+- Encrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (server)
+- Conceal the encrypted message within the carrier using a steganography algorithm (server)
 - Carrier exchange (server/client)
-- Extract encrypted message from carrier using reverse steganography algorithm based on steganography key (client)
-- Decrypt hidden message using AES-CBC decryption algorithm (client)
+- Extract the encrypted message from the carrier using a reverse steganography algorithm (client)
+- Decrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (client)
+
+## [Documentation](https://github.com/nduje/Steganography/blob/master/documentation):
+[Steganography.pptx](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pptx)
+[Steganography.pdf](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pdf)
