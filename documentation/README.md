@@ -52,7 +52,7 @@ Format informacije koja se šalje
 
 # 3. Protokol za uspostavu steganografskog ključa
 
-Protokol implementira **Diffie-Hellman** **key exchange protokol i omogućava uspostavu dijeljenog steganografskog ključa između dva entiteta (klijent i server). Protokol koristi **RSA\*\* kriptosustav za zaštitu integriteta Diffie-Hellman javnih ključeva.
+Protokol implementira **Diffie-Hellman** key exchange protokol i omogućava uspostavu dijeljenog steganografskog ključa između dva entiteta (klijent i server). Protokol koristi **RSA** kriptosustav za zaštitu integriteta Diffie-Hellman javnih ključeva.
 
 Popis oznaka u protokolu:
 
@@ -280,7 +280,7 @@ Enkripcija u CTR modu
 
 Dekripcija u CTR modu
 
-Razlog korištenja CTR moda leži u tome što je CTR mode **\*block** cipher\* koji se ponaša kao **\*stream** cipher\*, a to znači da ćemo na izlazu imati isti broj bitova kao što je bio na ulazu. Ovo je iznimno važno zbog načina na koji se poruka enkodira unutar nositelja.
+Razlog korištenja CTR moda leži u tome što je CTR mode **block** _cipher_ koji se ponaša kao **stream** _cipher_, a to znači da ćemo na izlazu imati isti broj bitova kao što je bio na ulazu. Ovo je iznimno važno zbog načina na koji se poruka enkodira unutar nositelja.
 
 ## Kod
 
