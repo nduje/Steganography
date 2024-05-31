@@ -56,24 +56,24 @@ Protokol implementira **Diffie-Hellman** **key exchange protokol i omogućava 
 
 Popis oznaka u protokolu:
 
-| Oznaka          | Opis                                                        |
-| --------------- | ----------------------------------------------------------- | --- | ------------------------------------- |
-| C               | klijent                                                     |
-| S               | server                                                      |
-| RSApriv, RSApub | privatni i javni RSA ključevi                               |
-| DHpriv, DHpub   | privatni i javni DH ključevi                                |
-| DHparams        | javni DH parametri: prime modulus (p) i group generator (g) |
-| Sig(RSApriv, m) | RSA digitalno potpisana poruka m                            |
-| a               |                                                             |  b  | konkatenacija (spajanje) poruka a i b |
+| Oznaka                                 | Opis                                                            |
+| -------------------------------------- | :-------------------------------------------------------------- |
+| C                                      | klijent (student/ovo računalo)                                  |
+| S                                      | server (_crypto oracle_)                                        |
+| RSA<sub>priv</sub>, RSA<sub>pub</sub>  | privatni i javni RSA ključevi                                   |
+| DH<sub>priv</sub>, DH<sub>pub</sub>    | privatni i javni DH ključevi                                    |  |
+| DH<sub>params</sub>                    | javni DH parametri: _prime modulus_ (p) i _group generator_ (g) |
+| **Sig**(RSA<sub>priv</sub></sub>, _m_) | RSA digitalno potpisana poruka _m_                              |
+| _a_ \|\| _b_                           | konkatenacija (spajanje) poruka _a_ i _b_                       |
 
 ### Protokol
 
-| Tko šalje | Poruka koja se šalje |
-| --------- | -------------------- | --- | ------------------------ | --- | ------- | --- | ------- |
-| C → S     | RSApubC              |
-| S → C     | RSApubS, DHparams    |
-| C → S     | DHpubC               |     |  Sig(RSAprivC, DHpubC)   |
-| S → C     | DHpubS               |     |  Sig(RSAprivS, DHparams  |     | DHpubS  |     | DHpubC) |
+| Tko šalje  | Poruka koja se šalje                                                                                                              |
+| :--------: | :-------------------------------------------------------------------------------------------------------------------------------- |
+| C &rarr; S | RSA<sub>pub,C</sub>                                                                                                               |
+| S &rarr; C | RSA<sub>pub,S</sub>, DH<sub>params</sub>                                                                                          |
+| C &rarr; S | DH<sub>pub,C</sub> \|\| **Sig**(RSA<sub>priv,C</sub></sub> , DH<sub>pub,C</sub>)                                                  |
+| S &rarr; C | DH<sub>pub,S</sub> \|\| **Sig**(RSA<sub>priv,S</sub></sub> , DH<sub>params</sub> \|\| DH<sub>pub,S</sub> \|\| DH<sub>pub,C</sub>) |
 
 **Steganografski ključ** se dobije po formuli:
 
