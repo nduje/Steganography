@@ -14,5 +14,5 @@
 - Decrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (client)
 
 ## [Documentation](https://github.com/nduje/Steganography/blob/master/documentation):
-[Steganography.pptx](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pptx)
-[Steganography.pdf](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pdf)
+- [Steganography.pptx](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pptx)
+- [Steganography.pdf](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pdf)
