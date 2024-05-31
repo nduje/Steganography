@@ -13,6 +13,6 @@
 - Extract the encrypted message from the carrier using a reverse steganography algorithm (client)
 - Decrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (client)
 
-## [Documentation](https://github.com/nduje/Steganography/blob/master/documentation):
+## [Documentation:](https://github.com/nduje/Steganography/blob/master/documentation)
 - [Steganography.pptx](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pptx)
 - [Steganography.pdf](https://github.com/nduje/Steganography/blob/master/documentation/Steganography.pdf)
