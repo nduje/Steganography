@@ -4,14 +4,14 @@
 
 ## Steps:
 
-- RSA key generation (server/client)
-- Diffie-Hellman key exchange (server/client)
-- Choose secret message (server)
-- Encrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (server)
-- Conceal the encrypted message within the carrier using a steganography algorithm (server)
-- Carrier exchange (server/client)
-- Extract the encrypted message from the carrier using a reverse steganography algorithm (client)
-- Decrypt the secret message using the AES-CTR decryption algorithm with the exchanged symmetric key (client)
+- **RSA** key generation _(server/client)_
+- **Diffie-Hellman** key exchange _(server/client)_
+- Choose **secret message** _(server)_
+- Encrypt the secret message using the **AES-CTR encryption algorithm** with the exchanged symmetric key _(server)_
+- Conceal the encrypted message within the carrier using a **steganography algorithm** _(server)_
+- **Carrier** exchange _(server/client)_
+- Extract the encrypted message from the carrier using a **reverse steganography algorithm** _(client)_
+- Decrypt the secret message using the **AES-CTR decryption algorithm** with the exchanged symmetric key _(client)_
 
 ## Documentation:
 - [Documentation page](https://github.com/nduje/Steganography/blob/master/documentation)
