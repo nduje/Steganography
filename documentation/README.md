@@ -52,28 +52,28 @@ Format informacije koja se šalje
 
 # 3. Protokol za uspostavu steganografskog ključa
 
-Protokol implementira **Diffie-Hellman** **key exchange protokol i omogućava uspostavu dijeljenog steganografskog ključa između dva entiteta (klijent i server). Protokol koristi **RSA\*\* kriptosustav za zaštitu integriteta Diffie-Hellman javnih ključeva.
+Protokol implementira **Diffie-Hellman** key exchange protokol i omogućava uspostavu dijeljenog steganografskog ključa između dva entiteta (klijent i server). Protokol koristi **RSA** kriptosustav za zaštitu integriteta Diffie-Hellman javnih ključeva.
 
 Popis oznaka u protokolu:
 
-| Oznaka          | Opis                                                        |
-| --------------- | ----------------------------------------------------------- | --- | ------------------------------------- |
-| C               | klijent                                                     |
-| S               | server                                                      |
-| RSApriv, RSApub | privatni i javni RSA ključevi                               |
-| DHpriv, DHpub   | privatni i javni DH ključevi                                |
-| DHparams        | javni DH parametri: prime modulus (p) i group generator (g) |
-| Sig(RSApriv, m) | RSA digitalno potpisana poruka m                            |
-| a               |                                                             |  b  | konkatenacija (spajanje) poruka a i b |
+| Oznaka                                 | Opis                                                            |
+| -------------------------------------- | :-------------------------------------------------------------- |
+| C                                      | klijent (student/ovo računalo)                                  |
+| S                                      | server (_crypto oracle_)                                        |
+| RSA<sub>priv</sub>, RSA<sub>pub</sub>  | privatni i javni RSA ključevi                                   |
+| DH<sub>priv</sub>, DH<sub>pub</sub>    | privatni i javni DH ključevi                                    |  |
+| DH<sub>params</sub>                    | javni DH parametri: _prime modulus_ (p) i _group generator_ (g) |
+| **Sig**(RSA<sub>priv</sub></sub>, _m_) | RSA digitalno potpisana poruka _m_                              |
+| _a_ \|\| _b_                           | konkatenacija (spajanje) poruka _a_ i _b_                       |
 
 ### Protokol
 
-| Tko šalje | Poruka koja se šalje |
-| --------- | -------------------- | --- | ------------------------ | --- | ------- | --- | ------- |
-| C → S     | RSApubC              |
-| S → C     | RSApubS, DHparams    |
-| C → S     | DHpubC               |     |  Sig(RSAprivC, DHpubC)   |
-| S → C     | DHpubS               |     |  Sig(RSAprivS, DHparams  |     | DHpubS  |     | DHpubC) |
+| Tko šalje  | Poruka koja se šalje                                                                                                              |
+| :--------: | :-------------------------------------------------------------------------------------------------------------------------------- |
+| C &rarr; S | RSA<sub>pub,C</sub>                                                                                                               |
+| S &rarr; C | RSA<sub>pub,S</sub>, DH<sub>params</sub>                                                                                          |
+| C &rarr; S | DH<sub>pub,C</sub> \|\| **Sig**(RSA<sub>priv,C</sub></sub> , DH<sub>pub,C</sub>)                                                  |
+| S &rarr; C | DH<sub>pub,S</sub> \|\| **Sig**(RSA<sub>priv,S</sub></sub> , DH<sub>params</sub> \|\| DH<sub>pub,S</sub> \|\| DH<sub>pub,C</sub>) |
 
 **Steganografski ključ** se dobije po formuli:
 
@@ -280,7 +280,7 @@ Enkripcija u CTR modu
 
 Dekripcija u CTR modu
 
-Razlog korištenja CTR moda leži u tome što je CTR mode **\*block** cipher\* koji se ponaša kao **\*stream** cipher\*, a to znači da ćemo na izlazu imati isti broj bitova kao što je bio na ulazu. Ovo je iznimno važno zbog načina na koji se poruka enkodira unutar nositelja.
+Razlog korištenja CTR moda leži u tome što je CTR mode **block** _cipher_ koji se ponaša kao **stream** _cipher_, a to znači da ćemo na izlazu imati isti broj bitova kao što je bio na ulazu. Ovo je iznimno važno zbog načina na koji se poruka enkodira unutar nositelja.
 
 ## Kod
 
